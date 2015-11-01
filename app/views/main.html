@@ -1,0 +1,66 @@
+<form class="form-horizontal">
+ <div class="form-group">
+    <div class="input-group col-md-12">
+      <input type="text" class="form-control" placeholder="Type city name here..." ng-model="cityName">
+      <div class="input-group-btn">
+        <button type="submit" class="btn btn-primary" ng-click="submit()">
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="alert alert-danger" role="alert" ng-if="displayErrorMessage">
+  <strong>Error!</strong> There is no data for the city name provided, please provide another name.
+</div>
+
+
+<div class="row" ng-if="forecast.length">
+  <h1>{{city}} <small>weather forecast</small></h1>
+  <div class="col-md-12 day-data-container" ng-repeat="day in forecast">
+    <div class="col-md-3 col-sm-12">
+      <div class="col-md-12 col-sm-4 col-xs-4">
+        <p>
+          {{ formatDate(day[0].dt_txt) }}
+        </p>
+      </div>
+      <div class="col-md-12 col-sm-2 col-xs-2">
+        <p>
+          <i class="wi wi-thermometer"></i>
+          {{ getDailyMaxTemperature(day, 'temp_max') | number: 0 }}
+          <i class="wi wi-celsius"></i>
+        </p>
+      </div>
+      <div class="col-md-12 col-sm-2 col-xs-2">
+        <p>
+          <i class="wi wi-thermometer-exterior"></i>
+          {{ getDailyMinTemperature(day, 'temp_min') | number: 0 }}
+          <i class="wi wi-celsius"></i>
+        </p>
+      </div>
+      <div class="col-md-12 col-sm-2 col-xs-2">
+        <p>
+          <i class="wi wi-barometer"></i>
+          {{ getAverageDailyDataByCriteria(day, 'pressure') | number: 0 }}
+        </p>
+      </div>
+      <div class="col-md-12 col-sm-2 col-xs-2">
+        <p>
+          <i class="wi wi-humidity"></i>
+          {{ getAverageDailyDataByCriteria(day, 'humidity') | number: 0 }}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-9 col-sm-12 col-xs-12" style="padding-left: 0; padding-right:0">
+      <div class="hourly-data-container" ng-repeat="hour in day">
+        <div class="hourly-data-info">{{ displayHour(hour.dt_txt) }}</div>
+        <div class="hourly-data-info"><i ng-class="getIconWeatherClass(hour.weather[0].id)"></i></div>
+        <div class="hourly-data-info"><span>{{ hour.main.temp | number: 0 }} <i class="wi wi-celsius"></i></span></div>
+        <div class="hourly-data-info"><span>{{ hour.wind.speed | number: 0 }} km/h</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
